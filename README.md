@@ -39,5 +39,29 @@ ChatGPT me sugerio cambiar a ReLU. Y aunque sabia que la funcion sigmoide estaba
 Llegado a este punto, combiene aclarar que los resultados de la red, no son una matriz con el valor 1 en el resultado esperado y 0 en el resto.
 El resultado es un array de 10 elementos, con un valor entre 0 y 1 que representan la probabilidad de que cada elemento sea el resultado correcto... imaginemos que se le da a la red la entrada de datos correspondiente al numero 3. El resultado esperado de la capa pordia asimilarse a esto:
 output_probs = [[0.03, 0.01, 0.02, 0.85, 0.02, 0.01, 0.02, 0.02, 0.04, 0.02]]
-Y al ser el valor mas alto el del indice 3, 0.85, la red asumirá que el numero es el 3
+Y al ser el valor mas alto el del indice 3, 0.85, la red asumirá que el numero es el 3.
 
+Entre la capa de entrada (con 784 neuronas) y la capa oculta siguiente (128 neuronas) existen 100352 conexiones posibles.
+La relacion entre estas capas puede calcuarse y pensarse estos resultados, como un nuevo array bidimencional o matriz.
+Dicha relacion se establece de la siguiente manera:
+Neurona_inicio_x * Wi + Bi, donde W es el peso que tiene dicha relacion y B un sesgo de activacion para la neurona resultante.
+
+En nuestro set de datos de entrenamiento, que viene en formato cvs, tenemos una primer columna "label" que nos indica que numero se representará con las siguientes columnas "pixel_x" (pixel_1, pixel_2, pixel_3...)
+De manera que en donde haya un trazo de escritura, se representara con un numero, y donde no, un cero.
+Estos datos se preparan separando la columna en un nuevo arreglo y_train.
+y_train = train['label'].values
+y en una matriz con los valores de los pixeles, sin esta columna. x_train
+x_train = train.drop(columns=['label']).values / 255.0
+Como el valor maximo es de 255, se normalizan los datos dividiendolos por 255 para obtener como numero maximo un 1 y el resto flotantes mayores a 0. Es decir, x_train contiene numeros entre 0 y 1.
+
+Luego se inicia una matriz que de tamaño 784x128 (100352) inicializada con numeros al azar
+W1 = np.random.randn(input_size, hidden_size) * np.sqrt(2.0 / input_size)
+Esta es la matriz de pesos asociados a las conexiones. Se inicializan de manera aleatoria. Pero con la etapa de entrenamiento esos valores se iran ajustando.
+Tambien se inicializa un array de tamaño 128 (128 para esta primer capa) completada con ceros. Este es el array b1 que contiene los sesgos de activacion para cada neurona.
+b1 = np.zeros((1, hidden_size))
+De igual manera, se ajustan durante el entrenamiento.
+
+Por lo tanto de los valores obtenido de pixel_x * Wi + bi se forma la nueva matriz representante de la primer capa oculta.
+Z1=np.dot(x_train, W1)+b1
+
+Aqui luego procesaba esta matriz con la funcion sigmoide para comprimir los valores a una escala entre 0 y 1. Pero como dije antes, eso se cambio a la funcion ReLU
