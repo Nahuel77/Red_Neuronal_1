@@ -69,7 +69,6 @@ for epoch in range(epochs):
     
     Z3 = np.dot(A2, W3) + b3
     A3 = softmax(Z3)
-    #print(A3.shape[0])
     
     #Loss
     loss = cross_entropy(y_train_encoded, A3)
