@@ -79,8 +79,21 @@ Softmax calcula la matriz de probabilidades. En esta matriz el numero de valor m
 
 Softmax: ![alt text](/miscellaneous/image.png)
 
-Softmax tomará la matriz resultante de la capa neuronal oculta previa a la salida, y tomara cada elemento de esa matriz, usandolo como exponente para elevar e a ese exponente y lo dividirá por la sumatoria de todos e elevado a cada elemento de esa misma matriz. (arriba en la imagen la formula matematica).
+Softmax tomará la matriz resultante de la capa neuronal oculta previa a la salida, y tomara cada elemento de esa matriz, usandolo como exponente para elevar e a ese exponente y lo dividirá por la sumatoria de todos e elevado a cada elemento de esa misma matriz. (arriba en la imagen la formula matematica **).
 
+    Z3 = np.dot(A2, W3) + b3
+    A3 = softmax(Z3)
 
+imaginemos que Z3 es solo un array de 2 elementos Z3 = [Z1, Z2] = [1.0, 2.0]
+
+calculamos e^Z1 y e^Z2: e^1, e^2 = 2.718, 7.389.
+
+el resultado sera otra matriz A3 de 2 elementos cuyos valores son:
+
+A3 = [A1, A2]
+A1 = 2.718/(2.718 + 7.389) = 0.2689, A2 = 7.389/(2.718 + 7.389) = 0.7311
+A3 = [0.2689, 0.7311]
 
 * No se que variacion tiene en python un array bidimencional, una matriz o un mapa. Respecto al tipo de datos. Si hablo de uno a otro, quiero que se entienda que no hago diferenciación, ya que lo dejo en plano algebraico. No quiere decir que suponga que son el mismo tipo de datos.
+
+* * En el codigo, la sumatoria se realiza elevando e a (y_pred + 1e-8) para evitar el overflow numerico.
