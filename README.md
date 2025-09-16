@@ -2,7 +2,7 @@ Primeramente aclarar que mas que especificaciones tecnicas, dejaré aqui algunas
 A modo de recordar lo aprendido aqui paso a explicarme a mi mismo y a quien visite este repo.
 
 Se ha dicho a modo de chiste, que la IA es un nido de bucles "IF".
-Dentro de las IA se podria decir sin tanto chiste que la red neuronal diseñada en este repositorio es un proceso de estadisticas aplicadas a matrices (o para python arrays bidimensionales) secuencialmente. Obteniendo asi una ultima matriz capa, donde el valor mas alto es el resultado esperado.
+Dentro de las IA se podria decir sin tanto chiste que la red neuronal diseñada en este repositorio es un proceso de estadisticas aplicadas a matrices (o para python arrays bidimensionales*) de un modo secuencial. Obteniendo asi una ultima matriz capa, donde el valor mas alto es el resultado esperado.
 
 Basicamente lo que aqui se codifica, es un grupo de matrices, que se interrelacionan, pero que al momento de entrenarlas, se les da las respuestas para que luego se ajusten esas relaciones.
 
@@ -21,19 +21,19 @@ Y aunque resulto, la curva de aprendizaje solo fue optima a valores altos de lea
 Asi fué que agregue re-ajuste la primera capa intermedia a 128 y agregue una nueva capa de 64.
 (784) -> (128) -> (64) -> (10)
 Que me dio problemas con la función sigmoide. Basicamente la gradiente aplicada a los valores de la capa de salida eran minimos, lo que estancaba la curva de aprendizaje.
-
-Epoch 0, Loss: 2.3037
-Epoch 10, Loss: 2.3012
-Epoch 20, Loss: 2.3012
-Epoch 30, Loss: 2.3012
-Epoch 40, Loss: 2.3012
-Epoch 50, Loss: 2.3012
-Epoch 60, Loss: 2.3012
-Epoch 70, Loss: 2.3012
-Epoch 80, Loss: 2.3012
-Epoch 90, Loss: 2.3012
-Loss: 2.3011508437188146 Una mierda
-
+<br/>
+Epoch 0, Loss: 2.3037<br/>
+Epoch 10, Loss: 2.3012<br/>
+Epoch 20, Loss: 2.3012<br/>
+Epoch 30, Loss: 2.3012<br/>
+Epoch 40, Loss: 2.3012<br/>
+Epoch 50, Loss: 2.3012<br/>
+Epoch 60, Loss: 2.3012<br/>
+Epoch 70, Loss: 2.3012<br/>
+Epoch 80, Loss: 2.3012<br/>
+Epoch 90, Loss: 2.3012<br/>
+Loss: 2.3011508437188146 Una mierda<br/>
+<br/>
 ChatGPT me sugerio cambiar a ReLU. Y aunque sabia que la funcion sigmoide estaba obsoleta en este campo, la habia elegido para comenzar a aprender redes neuronales. En resumen, no valio la pena. Pero es bueno comprender lo que es una funcion de gradientes aplicadas a este campo, para saber en que direccion debe moverse la red para obtener el resultado correcto.
 
 Llegado a este punto, combiene aclarar que los resultados de la red, no son una matriz con el valor 1 en el resultado esperado y 0 en el resto.
@@ -64,4 +64,23 @@ De igual manera, se ajustan durante el entrenamiento.
 Por lo tanto de los valores obtenido de pixel_x * Wi + bi se forma la nueva matriz representante de la primer capa oculta.
 Z1=np.dot(x_train, W1)+b1
 
-Aqui luego procesaba esta matriz con la funcion sigmoide para comprimir los valores a una escala entre 0 y 1. Pero como dije antes, eso se cambio a la funcion ReLU
+Aqui, luego, procesaba esta matriz con la funcion sigmoide para comprimir los valores a una escala entre 0 y 1. Pero como dije antes, eso se cambio a la funcion ReLU.
+
+La fucion sigmoide, como dije antes comprimia los valores en una escala entre 0 y 1. En cambio la funcion relu retorna 0 cuando un valor es menor a 0. Y retorna x cuando el valor x es mayor a 0.
+
+La matriz obtenida entonces, con valores superiores a 0, resulta en la capa neuronal A1
+    Z1=np.dot(x_train, W1)+b1
+    A1=relu(Z1)
+El proceso entonces se repite la cantidad de veces correspondiente a la cantidad de capas neuronales.
+
+Finalmente obtengo la capa final, no aplicando la fucion ReLU, que es solo para las capas ocultas. Sino la funcion Softmax.
+
+Softmax calcula la matriz de probabilidades. En esta matriz el numero de valor mas alto es el resultado que se estima correcto.
+
+Softmax: ![alt text](/miscellaneous/image.png)
+
+Softmax tomará la matriz resultante de la capa neuronal oculta previa a la salida, y tomara cada elemento de esa matriz, usandolo como exponente para elevar e a ese exponente y lo dividirá por la sumatoria de todos e elevado a cada elemento de esa misma matriz. (arriba en la imagen la formula matematica).
+
+
+
+* No se que variacion tiene en python un array bidimencional, una matriz o un mapa. Respecto al tipo de datos. Si hablo de uno a otro, quiero que se entienda que no hago diferenciación, ya que lo dejo en plano algebraico. No quiere decir que suponga que son el mismo tipo de datos.
