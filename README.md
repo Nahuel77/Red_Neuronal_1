@@ -105,15 +105,29 @@ Y que el label correspondiente a los datos de entrada que produjo A3 fueron [0, 
 En A3 se interpreta entonces que el resultado correscto es 3, pero en realidad, sabemos por el label que es 2.
 
 Teniendo la matriz de probabilidades A3, se procede a multiplicarla por la matriz de los labels y_train_encoded
-A3*y_train_encoded = [0*0.03, 0*0.01, 1*0.02, 0*0.85, 0*0.02, 0*0.01, 0*0.02, 0*0.02, 0*0.04, 0*0.02] = [0, 0, 0.02, 0, 0, 0, 0, 0, 0, 0]
-En realidad se multiplica por el logaritmo de la prediccion correcta. Pero no voy a calcular el logaritmo de cada prediccion para el ejemplo.
+A3*y_train_encoded = [0x0.03, 0x0.01, 1x0.02, 0x0.85, 0x0.02, 0x0.01, 0x0.02, 0x0.02, 0x0.04, 0x0.02] = [0, 0, 0.02, 0, 0, 0, 0, 0, 0, 0]
+En realidad se multiplica por el logaritmo de la prediccion correcta. Pero no voy a calcular el logaritmo de cada prediccion para el ejemplo. Sin embargo en la funcion se observa el metodo.
 
     def cross_entropy(y_true, y_pred):
         m = y_true.shape[0]
         return -np.sum(y_true * np.log(y_pred + 1e-8))/m
 
-y se divide por la cantidad de elementos del batch, m, para obtener el promedio. Con ese valor se ajustan los pesos asociados a la respuesta que debe dar.
+Se suman y se divide por la cantidad de elementos del batch, m, para obtener el promedio. Con ese valor se ajustan los pesos asociados a la respuesta que debe dar.
 
+Finalmente obtuve:
+<br/>
+Epoch 0, Loss: 3.2855<br/>
+Epoch 10, Loss: 2.0808<br/>
+Epoch 20, Loss: 1.6778<br/>
+Epoch 30, Loss: 1.2275<br/>
+Epoch 40, Loss: 1.2251<br/>
+Epoch 50, Loss: 0.9796<br/>
+Epoch 60, Loss: 0.7584<br/>
+Epoch 70, Loss: 0.6778<br/>
+Epoch 80, Loss: 0.6045<br/>
+Epoch 90, Loss: 0.5534<br/>
+Loss:  0.5166312820443583<br/>
+<br/>
 * No se que variacion tiene en python un array bidimencional, una matriz o un mapa. Respecto al tipo de datos. Si hablo de uno a otro, quiero que se entienda que no hago diferenciación, ya que lo dejo en plano algebraico. No quiere decir que suponga que son el mismo tipo de datos.
 
 * * En el codigo, la sumatoria se realiza elevando e a (y_pred + 1e-8) para evitar el overflow numerico.
