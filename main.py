@@ -3,12 +3,13 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 train = pd.read_csv('data_set/train.csv')
-test = pd.read_csv('data_set/test.csv')
 
 y_train = train['label'].values
 x_train = train.drop(columns=['label']).values / 255.0
 
+#########################
 ##### Entrenamiento #####
+#########################
 
 def one_hot_encode(y, num_classes=10):
     y_encoded = np.zeros((y.shape[0], num_classes))
@@ -109,7 +110,9 @@ for epoch in range(epochs):
 
 print("Loss: ", loss)
 
+######################
 ##### Validación #####
+######################
 
 #Fordward en validación
 
@@ -127,3 +130,37 @@ y_true = np.argmax(y_val, axis=1)
 
 accuracy = np.mean(y_pred == y_true)
 print("Accuracy:", accuracy)
+if(accuracy <= 0.8):
+    print("Una mierda!")
+else:
+    print("puede mejorar.")
+
+###################################
+##### Inferencia (prediccion) #####
+###################################
+
+test = pd.read_csv('data_set/test.csv')
+x_test = test.values / 255.0
+
+# Capa 1
+Z1 = np.dot(x_test, W1) + b1
+A1 = relu(Z1)
+
+# Capa 2
+Z2 = np.dot(A1, W2) + b2
+A2 = relu(Z2)
+
+# Capa salida
+Z3 = np.dot(A2, W3) + b3
+A3 = softmax(Z3)
+
+y_pred_test = np.argmax(A3, axis=1)
+
+for i in range(100):
+    print(f"Imagen {i+1}: Predicción = {y_pred_test[i]}")
+
+submission = pd.DataFrame({
+    "ImageId": np.arange(1, len(y_pred_test)+1),
+    "Label": y_pred_test
+})
+submission.to_csv("submission.csv", index=False)
